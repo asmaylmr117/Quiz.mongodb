@@ -36,7 +36,7 @@ async function startQuiz() {
 
 async function fetchQuizData() {
     try {
-        const response = await axios.get('https://quiz-ruddy-three.vercel.app/questions');
+        const response = await axios.get('https://quiz-mongodb.vercel.app/questions');
         quizData = response.data;
         console.log('Loaded quiz data from MongoDB Atlas:', quizData);
     } catch (error) {
