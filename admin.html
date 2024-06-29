@@ -53,7 +53,7 @@ async function addQuestion(event) {
     };
 
     try {
-        const response = await axios.post('https://quiz-ruddy-three.vercel.app/questions', newQuestion);
+        const response = await axios.post('https://quiz-mongodb.vercel.app/questions', newQuestion);
 
         if (response.status === 201) {
             alert('Question added successfully!');
@@ -70,7 +70,7 @@ async function addQuestion(event) {
 document.getElementById('deleteAllQuestions').addEventListener('click', async () => {
     if (confirm('Are you sure you want to delete all questions?')) {
         try {
-            const response = await axios.delete('https://quiz-ruddy-three.vercel.app/questions');
+            const response = await axios.delete('https://quiz-mongodb.vercel.app/questions');
 
             if (response.status === 200) {
                 alert('All questions have been deleted successfully.');
