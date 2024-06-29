@@ -33,7 +33,7 @@ const Question = mongoose.model('Question', questionSchema);
 
 // إعداد استخدام الـ CORS و Body Parser
 const corsOptions = {
-  origin: 'https://quiz-ruddy-three.vercel.app', // أو النطاق الذي تستخدمه في التطبيق
+  origin: 'https://quiz-mongodb.vercel.app', // أو النطاق الذي تستخدمه في التطبيق
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
