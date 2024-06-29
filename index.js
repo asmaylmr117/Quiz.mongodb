@@ -2,16 +2,18 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-require('dotenv').config();
-const axios = require('axios');
+require('dotenv').config(); // إصلاح الخطأ في كتابة "config"
 
 // إعداد التطبيق
 const app = express();
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 9000; // استخدم المنفذ من المتغيرات البيئية أو 9000 افتراضياً
 
 // اتصال بقاعدة بيانات MongoDB Atlas باستخدام متغير البيئة
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/local_database';
-mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoUri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => {
     console.log('MongoDB Atlas connected');
   })
@@ -32,13 +34,8 @@ const questionSchema = new mongoose.Schema({
 const Question = mongoose.model('Question', questionSchema);
 
 // إعداد استخدام الـ CORS و Body Parser
-const corsOptions = {
-  origin: 'https://quiz-mongodb.vercel.app', // أو النطاق الذي تستخدمه في التطبيق
-  optionsSuccessStatus: 200
-};
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // واجهة برمجة التطبيقات (API) لإضافة سؤال
 app.post('/questions', async (req, res) => {
@@ -47,7 +44,7 @@ app.post('/questions', async (req, res) => {
     const newQuestion = new Question({ question, a, b, c, d, correct });
     await newQuestion.save();
     console.log('Question added successfully:', newQuestion);
-    res.status(201).json(newQuestion); // إعادة حالة 201 للإنشاء
+    res.json(newQuestion);
   } catch (error) {
     console.error('Error adding question:', error);
     res.status(500).json({ error: error.message });
@@ -77,5 +74,5 @@ app.delete('/questions', async (req, res) => {
 
 // بدء الخادم
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
