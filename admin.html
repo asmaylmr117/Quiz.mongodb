@@ -35,11 +35,9 @@
             </div>
         </form>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.6/dist/sweetalert2.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.6/dist/sweetalert2.all.min.js"></script>
     <script>
-    const axios = require('axios').default;
-
-async function addQuestion(event) {
+     async function addQuestion(event) {
     event.preventDefault();
     const question = document.getElementById('new-question').value;
     const a = document.getElementById('new-answer-a').value;
@@ -53,9 +51,15 @@ async function addQuestion(event) {
     };
 
     try {
-        const response = await axios.post('https://quiz-mongodb.vercel.app/questions', newQuestion);
+        const response = await fetch('http://localhost:9000/questions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newQuestion)
+        });
 
-        if (response.status === 201) {
+        if (response.ok) {
             alert('Question added successfully!');
             document.getElementById('add-question-form').reset();
         } else {
@@ -70,24 +74,25 @@ async function addQuestion(event) {
 document.getElementById('deleteAllQuestions').addEventListener('click', async () => {
     if (confirm('Are you sure you want to delete all questions?')) {
         try {
-            const response = await axios.delete('https://quiz-mongodb.vercel.app/questions');
+            const response = await fetch('http://localhost:9000/questions', {
+                method: 'DELETE'
+            });
 
-            if (response.status === 200) {
+            if (response.ok) {
                 alert('All questions have been deleted successfully.');
             } else {
-                const errorMessage = response.data || 'Failed to delete questions';
+                const errorMessage = await response.text();
                 alert(`Error: ${errorMessage}`);
             }
         } catch (error) {
-            console.error('Error deleting questions:', error.message);
             alert(`Error: ${error.message}`);
         }
     }
 });
-    
-    function goBack() {
-        window.location.href = 'index.html';
-    }
+
+function goBack() {
+    window.location.href = 'index.html';
+}
     </script>
 </body>
 </html>
